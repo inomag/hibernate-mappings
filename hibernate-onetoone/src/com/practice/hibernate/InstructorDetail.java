@@ -6,9 +6,6 @@ import javax.persistence.*;
 @Entity
 @Table(name="instructor_detail")
 public class InstructorDetail {
-	
-	
-	
 	// Define the fields
 	// Annotate the fields	
 	@Id
@@ -21,10 +18,14 @@ public class InstructorDetail {
 	
 	@Column(name="hobby")
 	private String hobby;
+	
+	
+	// FOR BIDIRECTIONAL MAPPING
+	@OneToOne(mappedBy="instructorDetail",cascade=CascadeType.ALL)
+	private Instructor instructor;
 
 	
 	// Create Constructor
-
 	public InstructorDetail(String youtubeChannel, String hobby) {
 		this.youtubeChannel = youtubeChannel;
 		this.hobby = hobby;
@@ -50,6 +51,13 @@ public class InstructorDetail {
 	}
 	public void setHobby(String hobby) {
 		this.hobby = hobby;
+	}
+	
+	public Instructor getInstructor() {
+		return instructor;
+	}
+	public void setInstructor(Instructor instructor) {
+		this.instructor = instructor;
 	}
 	
 	// To String

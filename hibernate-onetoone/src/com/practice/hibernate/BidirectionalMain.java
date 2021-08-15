@@ -6,7 +6,7 @@ import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.cfg.Configuration;
 
-public class Main {
+public class BidirectionalMain {
 
 	public static void main(String[] args) {
 		
@@ -21,25 +21,19 @@ public class Main {
 		Session session = factory.getCurrentSession();
 //		
 		try {
-			// ADD INSTRUCTOR
-			Instructor ins = 
-					new Instructor("Pratik","Gupta","pratiksr12345@gmail.com");
-			InstructorDetail detail = 
-					new InstructorDetail("https://github.com/inomag","Coding");
-			
-			
-			ins.setInstructorDetail(detail);
 			
 			session.beginTransaction();
 			
-			// SAVE INSTRUCTOR
 			
-			// AS CASCADE TYPE IS ALL... SO DETAILS ARE ALSO SAVED
-			session.save(ins);
+			// Retrieve Instructor Details
+			InstructorDetail detail = 
+					session.get(InstructorDetail.class, 2);
+			
+			
+			// GET INSTRUCTOR FROM DETAILS
+			System.out.println(detail.getInstructor().getFirstName()+" "+detail.getInstructor().getLastName());
 			
 			session.getTransaction().commit();
-			System.out.println("Saved");
-			
 		}finally {
 			factory.close();
 		}

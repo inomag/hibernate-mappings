@@ -6,7 +6,7 @@ import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.cfg.Configuration;
 
-public class Main {
+public class DeleteDemo {
 
 	public static void main(String[] args) {
 		
@@ -21,21 +21,21 @@ public class Main {
 		Session session = factory.getCurrentSession();
 //		
 		try {
-			// ADD INSTRUCTOR
-			Instructor ins = 
-					new Instructor("Pratik","Gupta","pratiksr12345@gmail.com");
-			InstructorDetail detail = 
-					new InstructorDetail("https://github.com/inomag","Coding");
-			
-			
-			ins.setInstructorDetail(detail);
-			
+					
 			session.beginTransaction();
 			
-			// SAVE INSTRUCTOR
+			// GET INSTRUCTOR BY PRIMARY ID
+			Instructor ins = 
+					session.get(Instructor.class, 1);
 			
-			// AS CASCADE TYPE IS ALL... SO DETAILS ARE ALSO SAVED
-			session.save(ins);
+			System.out.println(ins.toString());
+			
+			if(ins!=null) {
+				
+				// WILL ALSO DELETE DETAILS OBJECT
+				session.delete(ins);	
+			}
+			
 			
 			session.getTransaction().commit();
 			System.out.println("Saved");
