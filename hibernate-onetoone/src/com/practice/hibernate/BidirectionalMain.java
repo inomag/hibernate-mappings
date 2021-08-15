@@ -24,17 +24,36 @@ public class BidirectionalMain {
 			
 			session.beginTransaction();
 			
-			
 			// Retrieve Instructor Details
-			InstructorDetail detail = 
-					session.get(InstructorDetail.class, 2);
+//			InstructorDetail detail = 
+//					session.get(InstructorDetail.class, 2);
+			
+//			InstructorDetail detail = 
+//					session.get(InstructorDetail.class, 5);
+			
+			// CASCADE DELETE
+//			InstructorDetail detail = 
+//					session.get(InstructorDetail.class, 3);
+			
+			// DELETE ONLY DETAILS
+			InstructorDetail detail = session.get(InstructorDetail.class,4);
+			
+			//GET INSTRUCTOR FROM DETAILS
+//			System.out.println(detail.getInstructor().getFirstName()+" "+detail.getInstructor().getLastName());			//
+			
+			// REMOVE ASSOCIATED OBJECT REFERENCE
+			detail.getInstructor().setInstructorDetail(null);
 			
 			
-			// GET INSTRUCTOR FROM DETAILS
-			System.out.println(detail.getInstructor().getFirstName()+" "+detail.getInstructor().getLastName());
-			
+			// DELETING DETAILS WILL ALSO DETELE INSTRUCTOR
+			session.delete(detail);
+	
 			session.getTransaction().commit();
+		}catch(NullPointerException e) {
+			e.printStackTrace();
 		}finally {
+			// LEAKING ISSUE... EXCEPTION HANDLING
+			session.close();
 			factory.close();
 		}
 	}
