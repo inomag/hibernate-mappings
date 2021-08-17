@@ -1,5 +1,8 @@
 package com.practice.hibernate;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import javax.persistence.*;
 
 @Entity
@@ -26,6 +29,10 @@ public class Instructor {
 	@JoinColumn(name="instructor_detail_id")
 	private InstructorDetail instructorDetail;
 	
+	@OneToMany(mappedBy="instructor",
+			cascade= {CascadeType.DETACH,CascadeType.MERGE,CascadeType.PERSIST,CascadeType.REFRESH})
+	private List<Course> courses;
+	
 	
 	/*CONSTRUCTORS*/
 	public Instructor() {
@@ -39,6 +46,23 @@ public class Instructor {
 	}
 
 	
+	public List<Course> getCourses() {
+		return courses;
+	}
+
+	public void setCourses(List<Course> courses) {
+		this.courses = courses;
+	}
+	
+	
+	// CONVINIENT METHOD FOR ADD COURSE AND BIDIRECTIONAL
+	public void addCourse(Course tmp) {
+		if(courses==null)courses= new ArrayList<>();
+		tmp.setInstructor(this);
+		courses.add(tmp);
+		
+	}
+
 	// GETTERS AND SETTERS
 	public int getId() {
 		return id;

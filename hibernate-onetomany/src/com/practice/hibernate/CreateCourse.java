@@ -6,7 +6,7 @@ import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.cfg.Configuration;
 
-public class Main {
+public class CreateCourse {
 
 	public static void main(String[] args) {
 		
@@ -15,30 +15,33 @@ public class Main {
 				.configure("hibernate.cfg.xml")
 				.addAnnotatedClass(Instructor.class)
 				.addAnnotatedClass(InstructorDetail.class)
+				.addAnnotatedClass(Course.class)
 				.buildSessionFactory();
 ////		
 //		// CREATE SESSION
 		Session session = factory.getCurrentSession();
 //		
 		try {
-			// ADD INSTRUCTOR
-			Instructor ins = 
-					new Instructor("Pratik","Gupta","pratiksr12345@gmail.com");
-			InstructorDetail detail = 
-					new InstructorDetail("https://github.com/inomag","Coding");
-			
-			
-			ins.setInstructorDetail(detail);
-			
 			session.beginTransaction();
 			
-			// SAVE INSTRUCTOR
+			List<Instructor> instructors = session.createQuery("From Instructor i")
+					.getResultList();
 			
-			// AS CASCADE TYPE IS ALL... SO DETAILS ARE ALSO SAVED
-			session.save(ins);
+			for(int i=0;i<instructors.size();i++) {
+				Instructor ins = instructors.get(i);
+				int key = i*2;
+				Course c1  = new Course("Course "+key);
+				key++;
+				Course c2  = new Course("Course "+key);
+				ins.addCourse(c1);
+				ins.addCourse(c2);
+				session.save(c1);
+				session.save(c2);
+			}
+		
 			
 			session.getTransaction().commit();
-			System.out.println("Saved");
+			System.out.println("Courses Saved");
 			
 		}finally {
 			factory.close();
