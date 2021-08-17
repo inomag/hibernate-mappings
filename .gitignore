@@ -1,3 +1,4 @@
 /hibernate-onetoone/lib/*.jar
 /hibernate-onetomany/lib/*.jar
+/hibernate-onetomany-eagerVSlazy/lib/*.jar
 /.metadata/
