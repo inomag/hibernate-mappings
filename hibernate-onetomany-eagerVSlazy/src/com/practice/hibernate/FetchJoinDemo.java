@@ -2,9 +2,11 @@ package com.practice.hibernate;
 
 import java.util.List;
 
+
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.cfg.Configuration;
+import org.hibernate.query.Query;
 
 public class FetchJoinDemo {
 
@@ -24,9 +26,20 @@ public class FetchJoinDemo {
 		try {
 			session.beginTransaction();
 			
+			// OPTION 2 : Hibernate Query for HQL
+			
+			
 			int id = 1;
 			long time = System.currentTimeMillis();
-			Instructor ins = session.get(Instructor.class, id);
+			
+			Query<Instructor> query = session.createQuery("Select i from Instructor i "
+					+"JOIN FETCH i.courses "
+					+"where i.id=:theInstructorId", 
+					Instructor.class);
+			
+			query.setParameter("theInstructorId",id);
+			
+			Instructor ins = query.getSingleResult();
 			System.out.println(System.currentTimeMillis()-time);
 
 			
