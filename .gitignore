@@ -2,4 +2,5 @@
 /hibernate-onetomany/lib/*.jar
 /hibernate-onetomany-eagerVSlazy/lib/*.jar
 /hibernate-onetomany-uni/lib/*.jar
+/hibernate-manytomany/lib/*.jar
 /.metadata/
